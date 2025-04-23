@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# ────────────────────────────────────────────────────────────────────────────────
+# Configuration: adjust this if your environment-setup file has a different name
+ENV_SETUP_FILE="environment_setup.sh"
+TARGET_ALIAS_FILE="$HOME/.bash_aliases"
+# ────────────────────────────────────────────────────────────────────────────────
+
+# 1. Ensure the source file exists
+if [ ! -f "$ENV_SETUP_FILE" ]; then
+  echo "Error: '$ENV_SETUP_FILE' not found in $(pwd)." >&2
+  exit 1
+fi
+
+# 2. Overwrite (or create) ~/.bash_aliases with its contents
+#    WARNING: this will discard any existing aliases in ~/.bash_aliases
+cat "$ENV_SETUP_FILE" > "$TARGET_ALIAS_FILE"
+
+# 3. Reload your aliases into the current shell
+#    If you plan to run other scripts immediately after, consider sourcing your login file instead:
+#    source "$HOME/.bashrc"
+source "$TARGET_ALIAS_FILE"
+
+# 4. Print confirmation in purple (ANSI magenta)
+printf "\033[35mAliases have been successfully implemented!\033[0m\n"
